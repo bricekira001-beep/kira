@@ -50,7 +50,7 @@ class MatchSportif {
   final String stade;
 }
 
-const List<MatchSportif> matchs = [
+final List<MatchSportif> matchs = [
   MatchSportif(
     imageUrl:
         'https://images.unsplash.com/photo-1575361204480-aadea25e6e68?auto=format&fit=crop&w=1200&q=80',
