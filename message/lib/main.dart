@@ -1,121 +1,284 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const TicketSportApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class TicketSportApp extends StatelessWidget {
+  const TicketSportApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Tickets Sportifs',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: const Color(0xFF121212),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFFFF6B00),
+          brightness: Brightness.dark,
+        ),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFF1B1B1B),
+          foregroundColor: Colors.white,
+        ),
+        useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const ListeMatchsScreen(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class MatchSportif {
+  const MatchSportif({
+    required this.imageUrl,
+    required this.equipeDomicile,
+    required this.equipeExterieur,
+    required this.date,
+    required this.prixFcfa,
+    required this.stade,
+  });
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  final String imageUrl;
+  final String equipeDomicile;
+  final String equipeExterieur;
+  final DateTime date;
+  final int prixFcfa;
+  final String stade;
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+const List<MatchSportif> matchs = [
+  MatchSportif(
+    imageUrl:
+        'https://images.unsplash.com/photo-1575361204480-aadea25e6e68?auto=format&fit=crop&w=1200&q=80',
+    equipeDomicile: 'Lions de Dakar',
+    equipeExterieur: 'Étoile de Thiès',
+    date: DateTime(2026, 4, 12, 19, 30),
+    prixFcfa: 5000,
+    stade: 'Stade Léopold Sédar Senghor',
+  ),
+  MatchSportif(
+    imageUrl:
+        'https://images.unsplash.com/photo-1518604666860-9ed391f76460?auto=format&fit=crop&w=1200&q=80',
+    equipeDomicile: 'AS Abidjan',
+    equipeExterieur: 'FC Yamoussoukro',
+    date: DateTime(2026, 4, 20, 18, 0),
+    prixFcfa: 7500,
+    stade: 'Stade Félix Houphouët-Boigny',
+  ),
+  MatchSportif(
+    imageUrl:
+        'https://images.unsplash.com/photo-1508098682722-e99c643e7485?auto=format&fit=crop&w=1200&q=80',
+    equipeDomicile: 'Union Bamako',
+    equipeExterieur: 'Real Sikasso',
+    date: DateTime(2026, 5, 2, 20, 15),
+    prixFcfa: 6000,
+    stade: 'Stade du 26 Mars',
+  ),
+];
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+final NumberFormat formatPrix = NumberFormat.currency(
+  locale: 'fr_FR',
+  symbol: 'FCFA',
+  decimalDigits: 0,
+);
+
+final DateFormat formatDate = DateFormat('EEEE d MMMM y à HH:mm', 'fr_FR');
+
+class ListeMatchsScreen extends StatelessWidget {
+  const ListeMatchsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+      appBar: AppBar(title: const Text('Matchs disponibles')),
+      body: ListView.builder(
+        padding: const EdgeInsets.all(16),
+        itemCount: matchs.length,
+        itemBuilder: (context, index) {
+          final match = matchs[index];
+          return Card(
+            margin: const EdgeInsets.only(bottom: 16),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(12),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => DetailMatchScreen(match: match),
+                  ),
+                );
+              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                    child: Image.network(
+                      match.imageUrl,
+                      height: 180,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${match.equipeDomicile} vs ${match.equipeExterieur}',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          formatDate.format(match.date),
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          formatPrix.format(match.prixFcfa),
+                          style: const TextStyle(
+                            color: Color(0xFFFF6B00),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+    );
+  }
+}
+
+class DetailMatchScreen extends StatelessWidget {
+  const DetailMatchScreen({super.key, required this.match});
+
+  final MatchSportif match;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Détail du match')),
+      body: SingleChildScrollView(
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: .center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            Image.network(
+              match.imageUrl,
+              height: 240,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${match.equipeDomicile} vs ${match.equipeExterieur}',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  const SizedBox(height: 12),
+                  Text('Date : ${formatDate.format(match.date)}'),
+                  const SizedBox(height: 8),
+                  Text('Stade : ${match.stade}'),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Prix : ${formatPrix.format(match.prixFcfa)}',
+                    style: const TextStyle(
+                      color: Color(0xFFFF6B00),
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: double.infinity,
+                    child: FilledButton.icon(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => MonTicketScreen(match: match),
+                          ),
+                        );
+                      },
+                      style: FilledButton.styleFrom(
+                        backgroundColor: const Color(0xFFFF6B00),
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                      ),
+                      icon: const Icon(Icons.confirmation_num),
+                      label: const Text('Acheter le ticket'),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+    );
+  }
+}
+
+class MonTicketScreen extends StatelessWidget {
+  const MonTicketScreen({super.key, required this.match});
+
+  final MatchSportif match;
+
+  @override
+  Widget build(BuildContext context) {
+    final qrData =
+        'Ticket|${match.equipeDomicile}|${match.equipeExterieur}|${match.date.toIso8601String()}|${match.prixFcfa}';
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Mon ticket')),
+      body: Center(
+        child: Card(
+          margin: const EdgeInsets.all(20),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  '${match.equipeDomicile} vs ${match.equipeExterieur}',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(height: 8),
+                Text(formatDate.format(match.date), textAlign: TextAlign.center),
+                const SizedBox(height: 8),
+                Text(match.stade, textAlign: TextAlign.center),
+                const SizedBox(height: 14),
+                Text(
+                  formatPrix.format(match.prixFcfa),
+                  style: const TextStyle(
+                    color: Color(0xFFFF6B00),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                QrImageView(
+                  data: qrData,
+                  size: 220,
+                  backgroundColor: Colors.white,
+                ),
+                const SizedBox(height: 12),
+                const Text('Présentez ce QR Code à l’entrée'),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
