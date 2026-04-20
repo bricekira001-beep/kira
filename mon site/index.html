@@ -1,213 +1,101 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Maison Rouge | Restaurant gastronomique</title>
-  <meta
-    name="description"
-    content="Maison Rouge, restaurant moderne proposant une cuisine elegante, des produits frais et une experience chaleureuse."
-  >
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap"
-    rel="stylesheet"
-  >
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlueChat | Espace d'échange</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <header class="hero" id="accueil">
-    <nav class="navbar">
-      <a href="#accueil" class="brand">
-        <span class="brand-mark">MR</span>
-        <span class="brand-text">
-          <strong>Maison Rouge</strong>
-          <small>Restaurant contemporain</small>
-        </span>
-      </a>
+    <div class="app-container">
+        <aside class="sidebar">
+            <header class="sidebar-header">
+                <div class="user-profile">
+                    <img src="https://i.pravatar.cc/150?u=me" alt="Mon profil" class="avatar">
+                </div>
+                <div class="header-icons">
+                    <i class="fas fa-circle-notch" title="Statut"></i>
+                    <i class="fas fa-comment-alt" title="Nouveau message"></i>
+                    <i class="fas fa-ellipsis-v" title="Menu"></i>
+                </div>
+            </header>
 
-      <button class="menu-toggle" aria-label="Ouvrir le menu" aria-expanded="false">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+            <div class="search-box">
+                <div class="search-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Rechercher ou démarrer une discussion">
+                </div>
+            </div>
 
-      <div class="nav-links">
-        <a href="#menu">Menu</a>
-        <a href="#histoire">Histoire</a>
-        <a href="#contact">Contact</a>
-        <a href="#reservation" class="nav-cta">Reserver</a>
-      </div>
-    </nav>
+            <div class="chat-list">
+                <div class="contact active">
+                    <img src="https://i.pravatar.cc/150?u=alice" alt="Alice" class="avatar">
+                    <div class="contact-info">
+                        <div class="contact-top">
+                            <h4>Alice</h4>
+                            <span class="time">14:30</span>
+                        </div>
+                        <p class="last-msg">On se voit à 18h ? 🚀</p>
+                    </div>
+                </div>
+                <div class="contact">
+                    <img src="https://i.pravatar.cc/150?u=bob" alt="Bob" class="avatar">
+                    <div class="contact-info">
+                        <div class="contact-top">
+                            <h4>Groupe Projet</h4>
+                            <span class="time">Hier</span>
+                        </div>
+                        <p class="last-msg">Image reçue ✅</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
 
-    <div class="hero-content">
-      <div class="hero-copy">
-        <p class="eyebrow">Cuisine signature & ambiance raffinee</p>
-        <h1>Une table moderne pour vos plus belles soirees.</h1>
-        <p class="hero-text">
-          Degustez une cuisine inspiree des produits locaux, servie dans un cadre
-          elegant pense pour les dejeuners d'affaires comme les diners d'exception.
-        </p>
-        <div class="hero-actions">
-          <a href="#reservation" class="btn btn-primary">Reserver une table</a>
-          <a href="#menu" class="btn btn-secondary">Voir la carte</a>
-        </div>
-      </div>
+        <main class="chat-window">
+            <header class="chat-header">
+                <div class="chat-contact-info">
+                    <img src="https://i.pravatar.cc/150?u=alice" alt="Alice" class="avatar">
+                    <div>
+                        <h3>Alice</h3>
+                        <span class="status">En ligne</span>
+                    </div>
+                </div>
+                <div class="header-icons">
+                    <i class="fas fa-video"></i>
+                    <i class="fas fa-phone-alt"></i>
+                    <i class="fas fa-search"></i>
+                </div>
+            </header>
 
-      <div class="hero-card">
-        <p class="card-label">Specialite du chef</p>
-        <h2>Filet grille, sauce aux herbes et legumes rotis</h2>
-        <p>
-          Une assiette genereuse, precise et moderne, preparee chaque jour avec des
-          ingredients selectionnes.
-        </p>
-        <div class="hero-meta">
-          <span>Service midi & soir</span>
-          <span>Depuis 2012</span>
-        </div>
-      </div>
+            <div class="messages-container" id="messageDisplay">
+                <div class="message received">
+                    <p>Salut ! Tu as fini le design ?</p>
+                    <span class="msg-time">14:25</span>
+                </div>
+                <div class="message sent">
+                    <p>Oui, je t'envoie la photo du rendu tout de suite.</p>
+                    <span class="msg-time">14:28</span>
+                </div>
+            </div>
+
+            <footer class="chat-footer">
+                <i class="far fa-smile icon-btn" title="Emojis"></i>
+                <label for="file-input">
+                    <i class="fas fa-paperclip icon-btn" title="Joindre"></i>
+                </label>
+                <input type="file" id="file-input" hidden accept="image/*,video/*">
+                
+                <form class="input-wrapper" id="chatForm">
+                    <input type="text" id="userInput" placeholder="Taper un message..." autocomplete="off">
+                    <button type="submit" class="send-btn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </footer>
+        </main>
     </div>
-  </header>
 
-  <main>
-    <section class="highlights">
-      <article class="highlight-card">
-        <h3>Produits frais</h3>
-        <p>Des ingredients soigneusement choisis aupres de producteurs de confiance.</p>
-      </article>
-      <article class="highlight-card">
-        <h3>Cadre elegant</h3>
-        <p>Un espace chaleureux, lumineux et ideal pour toutes vos occasions.</p>
-      </article>
-      <article class="highlight-card">
-        <h3>Service attentionne</h3>
-        <p>Une equipe disponible pour rendre chaque experience simple et memorable.</p>
-      </article>
-    </section>
-
-    <section class="menu-section" id="menu">
-      <div class="section-heading">
-        <p class="eyebrow">Notre carte</p>
-        <h2>Un menu pense pour surprendre et fideliser.</h2>
-        <p>
-          Une selection de plats soignes, equilibres et cuisines avec une touche
-          contemporaine.
-        </p>
-      </div>
-
-      <div class="menu-grid">
-        <article class="menu-item">
-          <div>
-            <h3>Tartare de saumon</h3>
-            <p>Citron confit, avocat, herbes fraiches et chips croustillantes.</p>
-          </div>
-          <span>12 500 FCFA</span>
-        </article>
-        <article class="menu-item">
-          <div>
-            <h3>Veloute du marche</h3>
-            <p>Legumes de saison, creme legere et huile verte maison.</p>
-          </div>
-          <span>9 000 FCFA</span>
-        </article>
-        <article class="menu-item">
-          <div>
-            <h3>Poulet grille signature</h3>
-            <p>Marinade aux epices douces, puree onctueuse et jus reduit.</p>
-          </div>
-          <span>16 000 FCFA</span>
-        </article>
-        <article class="menu-item">
-          <div>
-            <h3>Pates aux gambas</h3>
-            <p>Sauce cremee au basilic, tomates confites et parmesan affine.</p>
-          </div>
-          <span>18 500 FCFA</span>
-        </article>
-        <article class="menu-item">
-          <div>
-            <h3>Fondant chocolat</h3>
-            <p>Coeur coulant, glace vanille et eclats de noisettes grillees.</p>
-          </div>
-          <span>7 500 FCFA</span>
-        </article>
-        <article class="menu-item">
-          <div>
-            <h3>Cocktail Maison Rouge</h3>
-            <p>Infusion hibiscus, agrumes frais et touche petillante.</p>
-          </div>
-          <span>6 000 FCFA</span>
-        </article>
-      </div>
-    </section>
-
-    <section class="story-section" id="histoire">
-      <div class="story-visual">
-        <div class="story-panel panel-top"></div>
-        <div class="story-panel panel-bottom"></div>
-      </div>
-      <div class="story-copy">
-        <p class="eyebrow">Notre histoire</p>
-        <h2>Une adresse pensee comme une experience complete.</h2>
-        <p>
-          Maison Rouge associe gastronomie, design interieur et accueil sincere pour
-          offrir un lieu ou l'on revient avec plaisir.
-        </p>
-        <p>
-          Notre cuisine valorise les textures, les sauces justes et les associations
-          modernes, avec une attention constante a la presentation.
-        </p>
-      </div>
-    </section>
-
-    <section class="reservation-section" id="reservation">
-      <div class="section-heading">
-        <p class="eyebrow">Reservation</p>
-        <h2>Planifiez votre prochaine visite.</h2>
-      </div>
-      <div class="reservation-banner">
-        <p>Ouvert du mardi au dimanche, de 12h00 a 23h00.</p>
-        <a href="#contact" class="btn btn-primary">Nous contacter</a>
-      </div>
-    </section>
-
-    <section class="contact-section" id="contact">
-      <div class="contact-copy">
-        <p class="eyebrow">Contact</p>
-        <h2>Parlons de votre reservation ou evenement prive.</h2>
-        <p>
-          Une question, une demande speciale ou une reservation de groupe ? Ecrivez-nous
-          et nous vous repondrons rapidement.
-        </p>
-
-        <div class="contact-details">
-          <p><strong>Telephone :</strong> +225 07 12 34 56 78</p>
-          <p><strong>Email :</strong> contact@maisonrouge.ci</p>
-          <p><strong>Adresse :</strong> Boulevard Lagunaire, Abidjan</p>
-        </div>
-      </div>
-
-      <form class="contact-form" id="contact-form">
-        <label for="name">Nom complet</label>
-        <input type="text" id="name" name="name" placeholder="Votre nom" required>
-
-        <label for="email">Adresse email</label>
-        <input type="email" id="email" name="email" placeholder="vous@email.com" required>
-
-        <label for="message">Votre message</label>
-        <textarea id="message" name="message" rows="5" placeholder="Votre demande..." required></textarea>
-
-        <button type="submit" class="btn btn-primary">Envoyer</button>
-        <p class="form-message" id="form-message" aria-live="polite"></p>
-      </form>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <p>Maison Rouge - 2026. Restaurant moderne et chaleureux.</p>
-  </footer>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
